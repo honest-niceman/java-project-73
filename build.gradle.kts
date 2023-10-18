@@ -7,8 +7,8 @@ plugins {
 group = "hexlet.code"
 version = "0.0.1-SNAPSHOT"
 
-java {
-	sourceCompatibility = JavaVersion.VERSION_20
+application {
+	mainClass.set("hexlet.code.app.AppApplication")
 }
 
 repositories {
