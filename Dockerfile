@@ -1,23 +1,21 @@
 FROM eclipse-temurin:20-jdk
 
-ARG GRADLE_VERSION=8.2
+ARG GRADLE_VERSION=8.3
 
-RUN apt-get update && apt-get install -yq unzip
+RUN apt-get update && apt-get install -yq make unzip
 
-RUN wget -q https://services.gradle.org/distributions/gradle-${GRADLE_VERSION}-bin.zip \
-    && unzip gradle-${GRADLE_VERSION}-bin.zip \
-    && rm gradle-${GRADLE_VERSION}-bin.zip
+WORKDIR /backend
 
-ENV GRADLE_HOME=/opt/gradle
+COPY gradle gradle
+COPY build.gradle.kts .
+COPY settings.gradle.kts .
+COPY gradlew .
 
-RUN mv gradle-${GRADLE_VERSION} ${GRADLE_HOME}
+RUN ./gradlew --no-daemon dependencies
 
-ENV PATH=$PATH:$GRADLE_HOME/bin
+RUN ./gradlew --no-daemon build
 
-WORKDIR /app
+ENV JAVA_OPTS "-Xmx512M -Xms512M"
+EXPOSE 8080
 
-COPY /app .
-
-RUN gradle installDist
-
-CMD ./build/install/java-javalin-blog/bin/java-javalin-blog
+CMD java -jar build/libs/HexletSpringBlog-1.0-SNAPSHOT.jar
