@@ -18,4 +18,4 @@ RUN ./gradlew --no-daemon build
 ENV JAVA_OPTS "-Xmx512M -Xms512M"
 EXPOSE 8080
 
-CMD java -jar build/libs/HexletSpringBlog-1.0-SNAPSHOT.jar
+CMD java -jar build/libs/app-1.0-SNAPSHOT.jar
